@@ -4,7 +4,7 @@ Webman JWT插件
 ### 安装
 
 ```
-composer require cdyun303/webman-jwt
+composer require cdyun/webman-jwt
 ```
 
 ### 例子

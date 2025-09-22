@@ -1,8 +1,8 @@
 <?php
 /**
- * @desc JwtService.php
+ * @desc JwtEnforcer.php
  * @author cdyun(121625706@qq.com)
- * @date 2025/9/21 21:49
+ * @date 2025/9/22 17:01
  */
 declare(strict_types=1);
 
@@ -12,7 +12,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use support\Log;
 
-class JwtService
+class JwtEnforcer
 {
     /**
      * @param array $payload
@@ -34,6 +34,51 @@ class JwtService
 
         return JWT::encode($payload, self::getSecretKey(), self::getAlgorithm());
 
+    }
+
+    /**
+     * @param string|null $name - 名称
+     * @param $default - 默认值
+     * @return mixed
+     * @author cdyun(121625706@qq.com)
+     * @desc 获取配置config
+     */
+    public static function getConfig(?string $name = null, $default = null): mixed
+    {
+        if (!is_null($name)) {
+            return config('plugin.cdyun.webman-jwt.jwt.' . $name, $default);
+        }
+        return config('plugin.cdyun.webman-jwt.jwt');
+    }
+
+    /**
+     * @return mixed
+     * @author cdyun(121625706@qq.com)
+     * @desc JWT签发方标识
+     */
+    private static function getIss(): mixed
+    {
+        return self::getConfig('iss', 'cdyun');
+    }
+
+    /**
+     * @return mixed
+     * @author cdyun(121625706@qq.com)
+     * @desc 获取密钥
+     */
+    private static function getSecretKey(): mixed
+    {
+        return self::getConfig('secret', 'secret_key');
+    }
+
+    /**
+     * @return mixed
+     * @author cdyun(121625706@qq.com)
+     * @desc 获取加密算法
+     */
+    private static function getAlgorithm(): mixed
+    {
+        return self::getConfig('alg', 'HS256');
     }
 
     /**
@@ -60,48 +105,4 @@ class JwtService
         }
     }
 
-    /**
-     * @param string|null $name - 名称
-     * @param $default - 默认值
-     * @return mixed
-     * @author cdyun(121625706@qq.com)
-     * @desc 获取配置config
-     */
-    public static function getConfig(?string $name = null, $default = null): mixed
-    {
-        if (!is_null($name)) {
-            return config('plugin.cdyun.webman-jwt.jwt.' . $name, $default);
-        }
-        return config('plugin.cdyun.webman-jwt.jwt');
-    }
-
-    /**
-     * @return mixed
-     * @author cdyun(121625706@qq.com)
-     * @desc 获取密钥
-     */
-    private static function getSecretKey(): mixed
-    {
-        return self::getConfig('secret', 'secret_key');
-    }
-
-    /**
-     * @return mixed
-     * @author cdyun(121625706@qq.com)
-     * @desc 获取加密算法
-     */
-    private static function getAlgorithm(): mixed
-    {
-        return self::getConfig('alg', 'HS256');
-    }
-
-    /**
-     * @return mixed
-     * @author cdyun(121625706@qq.com)
-     * @desc JWT签发方标识
-     */
-    private static function getIss(): mixed
-    {
-        return self::getConfig('iss', 'cdyun');
-    }
 }
