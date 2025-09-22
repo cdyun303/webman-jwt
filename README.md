@@ -12,20 +12,20 @@ composer require cdyun/webman-jwt
 引入文件:
 
 ```PHP
-use Cdyun\WebmanJwt\JwtService;
+use Cdyun\WebmanJwt\JwtEnforcer;
 ```
 生成TOKEN
 ```PHP
-JwtService::generateToken($payload);
+JwtEnforcer::generateToken($payload);
 ```
 
 验证TOKEN
 
 ```PHP
-JwtService::validateToken($token);
+JwtEnforcer::validateToken($token);
 ```
 获取配置Config
 
 ```PHP
-JwtService::getConfig($name , $default);
+JwtEnforcer::getConfig($name , $default);
 ```
